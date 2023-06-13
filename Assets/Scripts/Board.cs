@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour
-{
+public class Board : MonoBehaviour {
     // Start is called before the first frame update
 
     [SerializeField]
@@ -18,22 +17,19 @@ public class Board : MonoBehaviour
     [SerializeField]
     Gem[] gems; // An array of gems.
 
-    void Start()
-    {
+    void Start() {
         // Setup the board.
         Setup();
     }
 
-    private void Setup()
-    {
+    private void Setup() {
         // Iterate over each tile on the board.
-        for (int x = 0; x < boardWidth; x++)
-        {
-            for (int y = 0; y < boardHeight; y++)
-            {
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
 
+                // Get the current tile's position.
                 Vector2 currentTilePosition = new Vector2(x, y);
-                
+
                 // Create a new background tile at the specified position.
                 GameObject backgroundTile = Instantiate(backgroundTilePrefab, currentTilePosition, Quaternion.identity);
 
@@ -53,15 +49,14 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void SpawnGem(Vector2 spawnLocation, Gem gem)
-    {
+    private void SpawnGem(Vector2 spawnLocation, Gem gem) {
         // Create a new gem at the specified location.
         GameObject gemObject = Instantiate(gem.gameObject, spawnLocation, Quaternion.identity);
 
         // Set the gem's parent to the board.
         gemObject.transform.parent = transform;
-        
-        gem.name = "Gem [" + spawnLocation.x + "," + spawnLocation.y + "]";
 
+        // Set the gem's name.
+        gemObject.name = "Gem [" + spawnLocation.x + "," + spawnLocation.y + "]";
     }
 }
