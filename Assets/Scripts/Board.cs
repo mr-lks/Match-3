@@ -7,15 +7,17 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField]
-    private int width; // The width of the board.
+    private int boardWidth; // The width of the board.
 
     [SerializeField]
-    private int height; // The height of the board.
+    private int boardHeight; // The height of the board.
 
     [SerializeField]
-    private GameObject bgTilePrefab; // The prefab for the background tiles.
+    private GameObject backgroundTilePrefab; // The prefab for the background tiles.
 
- 
+    [SerializeField]
+    Gem[] gems; // An array of gems.
+
     void Start()
     {
         // Setup the board.
@@ -25,20 +27,41 @@ public class Board : MonoBehaviour
     private void Setup()
     {
         // Iterate over each tile on the board.
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < boardWidth; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < boardHeight; y++)
             {
+
+                Vector2 currentTilePosition = new Vector2(x, y);
+                
                 // Create a new background tile at the specified position.
-                GameObject bgTile = Instantiate(bgTilePrefab, new Vector2(x, y), Quaternion.identity);
+                GameObject backgroundTile = Instantiate(backgroundTilePrefab, currentTilePosition, Quaternion.identity);
 
                 // Set the tile's parent to the board.
-                bgTile.transform.parent = transform;
+                backgroundTile.transform.parent = transform;
 
                 // Set the tile's name.
-                bgTile.name = "BG-Tile [" + x + "," + y + "]";
+                backgroundTile.name = "BG-Tile [" + x + "," + y + "]";
+
+                // Get a random gem from the array.
+                int gemIndex = Random.Range(0, gems.Length);
+                Gem gem = gems[gemIndex];
+
+                // Spawn the gem at the specified location.
+                SpawnGem(currentTilePosition, gem);
             }
         }
     }
 
+    private void SpawnGem(Vector2 spawnLocation, Gem gem)
+    {
+        // Create a new gem at the specified location.
+        GameObject gemObject = Instantiate(gem.gameObject, spawnLocation, Quaternion.identity);
+
+        // Set the gem's parent to the board.
+        gemObject.transform.parent = transform;
+        
+        gem.name = "Gem [" + spawnLocation.x + "," + spawnLocation.y + "]";
+
+    }
 }
